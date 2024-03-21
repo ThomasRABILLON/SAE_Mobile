@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:sae_mobile/auth/signout.dart';
+
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class SignIn extends StatefulWidget {
@@ -43,6 +45,10 @@ class _SignInState extends State<SignIn> {
             sm.showSnackBar(SnackBar(content: Text('Sign in failed: ${e.message}')));
           }
         }, child: const Text('Sign In')),
+        MaterialButton(onPressed: () {
+          Navigator.pushNamed(context, '/signup');
+        }, child: const Text('Sign Up')),
+        const SignOut(),
       ],
     );
   }
