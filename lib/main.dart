@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:sae_mobile/auth/signup.dart';
+import 'package:sae_mobile/auth/signin.dart';
 import 'package:sae_mobile/auth/signout.dart';
 
 void main() async {
