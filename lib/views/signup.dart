@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:sae_mobile/auth/signout.dart';
+import 'package:sae_mobile/models/auth/signup.dart';
 
-final SupabaseClient supabaseClient = Supabase.instance.client;
-
-class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+class SignUpView extends StatefulWidget {
+  const SignUpView({Key? key}) : super(key: key);
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignUpView> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpState extends State<SignUpView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -37,15 +35,8 @@ class _SignUpState extends State<SignUp> {
         MaterialButton(onPressed: () async {
           final ScaffoldMessengerState sm = ScaffoldMessenger.of(context);
           try {
-            final AuthResponse authResponse = await supabaseClient.auth.signUp(email: emailController.text, password: passwordController.text, data: {'username': usernameController.text});
-            final Session? session = authResponse.session;
-            final User? user = authResponse.user;
-
-            if (session != null && user != null) {
-              sm.showSnackBar(SnackBar(content: Text('Signed up as ${user.email}')));
-            } else {
-              sm.showSnackBar(const SnackBar(content: Text('Sign up failed')));
-            }
+            await SignUp.signUpWithPassword(emailController.text, passwordController.text);
+            sm.showSnackBar(const SnackBar(content: Text('Signed up')));
           } on AuthException catch (e) {
             sm.showSnackBar(SnackBar(content: Text('Sign up failed: ${e.message}')));
           }
@@ -53,7 +44,6 @@ class _SignUpState extends State<SignUp> {
         MaterialButton(onPressed: () {
           Navigator.pushNamed(context, '/signin');
         }, child: const Text('Sign In')),
-        const SignOut(),
       ],
     );
   }

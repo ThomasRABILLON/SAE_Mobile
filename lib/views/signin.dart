@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:sae_mobile/auth/signout.dart';
+import 'package:sae_mobile/models/auth/signin.dart';
 
-final SupabaseClient supabaseClient = Supabase.instance.client;
-
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class SignInView extends StatefulWidget {
+  const SignInView({Key? key}) : super(key: key);
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignInView> createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<SignInView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -32,15 +30,8 @@ class _SignInState extends State<SignIn> {
         MaterialButton(onPressed: () async {
           final ScaffoldMessengerState sm = ScaffoldMessenger.of(context);
           try {
-            final AuthResponse authResponse = await supabaseClient.auth.signInWithPassword(email: emailController.text, password: passwordController.text);
-            final Session? session = authResponse.session;
-            final User? user = authResponse.user;
-
-            if (session != null && user != null) {
-              sm.showSnackBar(SnackBar(content: Text('Signed in as ${user.email}')));
-            } else {
-              sm.showSnackBar(const SnackBar(content: Text('Sign in failed')));
-            }
+            await SignIn.signInWithPassword(emailController.text, passwordController.text);
+            sm.showSnackBar(const SnackBar(content: Text('Signed in')));
           } on AuthException catch (e) {
             sm.showSnackBar(SnackBar(content: Text('Sign in failed: ${e.message}')));
           }
@@ -48,7 +39,6 @@ class _SignInState extends State<SignIn> {
         MaterialButton(onPressed: () {
           Navigator.pushNamed(context, '/signup');
         }, child: const Text('Sign Up')),
-        const SignOut(),
       ],
     );
   }

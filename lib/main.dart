@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:sae_mobile/auth/signup.dart';
-import 'package:sae_mobile/auth/signin.dart';
-import 'package:sae_mobile/auth/signout.dart';
+import 'package:sae_mobile/views/signin.dart';
+import 'package:sae_mobile/views/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,10 +31,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/signup',
       routes: {
         '/signup': (context) => const Scaffold(
-          body: SignUp(),
+          body: SignUpView(),
         ),
         '/signin': (context) => const Scaffold(
-          body: SignIn(),
+          body: SignInView(),
         ),
       }
     );
