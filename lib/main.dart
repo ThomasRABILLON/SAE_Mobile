@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:sae_mobile/models/auth/signin.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:sae_mobile/views/signin.dart';
 import 'package:sae_mobile/views/signup.dart';
+import 'package:sae_mobile/views/profile.dart';
+
+import 'package:sae_mobile/models/user.dart' as user_model;
+import 'package:sae_mobile/models/builder.dart' as user_builder;
+import 'package:sae_mobile/models/queries/userQueries.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +20,8 @@ void main() async {
 
   runApp(const MyApp());
 }
+
+final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,6 +43,21 @@ class MyApp extends StatelessWidget {
         ),
         '/signin': (context) => const Scaffold(
           body: SignInView(),
+        ),
+        '/profile': (context) => Scaffold(
+          body: FutureBuilder(
+            future: UserQueries.getUserById(supabaseClient.auth.currentUser!.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              final user = user_model.User.fromJson(snapshot.data![0]);
+              return ProfileView(user: user);
+            },
+          )
         ),
       }
     );
