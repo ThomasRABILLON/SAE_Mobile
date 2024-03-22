@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:sae_mobile/views/signout.dart';
+
 import 'package:sae_mobile/models/user.dart' as user_model;
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
@@ -21,6 +23,7 @@ class _ProfileState extends State<ProfileView> {
         Text('Profile'),
         Text('Email: ${widget.user.email}'),
         Text('Name: ${widget.user.username}'),
+        const SignOut(),
       ],
     );
   }

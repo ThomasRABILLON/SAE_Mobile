@@ -19,6 +19,7 @@ class _SignOutState extends State<SignOut> {
         try {
           await supabaseClient.auth.signOut();
           sm.showSnackBar(const SnackBar(content: Text('Signed out')));
+          Navigator.pushNamed(context, '/signin');
         } on AuthException catch (e) {
           sm.showSnackBar(SnackBar(content: Text('Sign out failed: ${e.message}')));
         }

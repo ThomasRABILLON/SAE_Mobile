@@ -1,3 +1,4 @@
+import 'package:sae_mobile/models/annonce.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
@@ -17,5 +18,8 @@ class UserQueries {
       throw Exception('Failed to get user');
     }
     return response;
+  }
+
+  static void addAnnonceDistant(Annonce annonce) async {
   }
 }
