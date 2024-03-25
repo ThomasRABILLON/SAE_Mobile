@@ -32,18 +32,24 @@ class _SignUpState extends State<SignUpView> {
           obscureText: true,
           decoration: const InputDecoration(hintText: 'Password'),
         ),
-        MaterialButton(onPressed: () async {
-          final ScaffoldMessengerState sm = ScaffoldMessenger.of(context);
-          try {
-            await SignUp.signUpWithPassword(emailController.text, passwordController.text);
-            sm.showSnackBar(const SnackBar(content: Text('Signed up')));
-          } on AuthException catch (e) {
-            sm.showSnackBar(SnackBar(content: Text('Sign up failed: ${e.message}')));
-          }
-        }, child: const Text('Sign Up')),
-        MaterialButton(onPressed: () {
-          Navigator.pushNamed(context, '/signin');
-        }, child: const Text('Sign In')),
+        MaterialButton(
+            onPressed: () async {
+              final ScaffoldMessengerState sm = ScaffoldMessenger.of(context);
+              try {
+                await SignUp.signUpWithPassword(
+                    emailController.text, passwordController.text);
+                sm.showSnackBar(const SnackBar(content: Text('Signed up')));
+              } on AuthException catch (e) {
+                sm.showSnackBar(
+                    SnackBar(content: Text('Sign up failed: ${e.message}')));
+              }
+            },
+            child: const Text('Sign Up')),
+        MaterialButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/signin');
+            },
+            child: const Text('Sign In')),
       ],
     );
   }
