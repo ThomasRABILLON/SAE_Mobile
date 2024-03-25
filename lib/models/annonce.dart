@@ -3,52 +3,48 @@ import 'package:sae_mobile/models/queries/annonceQueries.dart';
 
 class Annonce {
   final String id;
-  final String title;
+  final String titre;
   final String description;
   final DateTime dateDeb;
   final DateTime dateFin;
   final User auteur;
-  late final User? repondant;
-  late final ControllerAnnonce controller;
+  final User? repondant;
+  late AnnonceController controller;
 
-  Annonce({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.dateDeb,
-    required this.dateFin,
-    required this.auteur,
-    this.repondant,
-  }) {
-    controller = ControllerAnnonce(this, AnnonceEnValidation());
+  Annonce(this.id, this.titre, this.description, this.dateDeb, this.dateFin, this.auteur, int etat, {this.repondant}) {
+    switch(etat) {
+      case 0:
+        controller = AnnonceController(this, AnnonceNonPublie());
+        break;
+      case 1:
+        controller = AnnonceController(this, AnnonceNonRepondu());
+        break;
+      case 2:
+        controller = AnnonceController(this, AnnonceRepondu());
+        break;
+    }
   }
 
-  factory Annonce.fromJson(Map<String, dynamic> json, User auteur, {User? repondant}) {
+
+  factory Annonce.fromJson(Map<String, dynamic> data, User auteur, int etat, {User? repondant}) {
     return Annonce(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      dateDeb: DateTime.parse(json['dateDeb'] as String),
-      dateFin: DateTime.parse(json['dateFin'] as String),
-      auteur: auteur,
+      data['id'] as String,
+      data['titre'] as String,
+      data['description'] as String,
+      DateTime.parse(data['date_deb'] as String),
+      DateTime.parse(data['date_fin'] as String),
+      auteur,
+      etat,
       repondant: repondant,
     );
   }
 
-  void setPreteur(User repondant) {
-    this.repondant = repondant;
+  void publier() {
+    controller.publier();
   }
 
-  ControllerAnnonce getController(EtatAnnonce etat) {
-    return ControllerAnnonce(this, etat);
-  }
-
-  void valider() {
-    controller.valider();
-  }
-
-  void accepter(User repondant) {
-    controller.accepter(repondant);
+  void repondre() {
+    controller.repondre();
   }
 
   void cloturer() {
@@ -56,88 +52,85 @@ class Annonce {
   }
 }
 
-class ControllerAnnonce {
+class AnnonceController {
   final Annonce annonce;
-  late final EtatAnnonce etat;
+  late EtatAnnonce etat;
 
-  const ControllerAnnonce(this.annonce, this.etat);
+  AnnonceController(this.annonce, this.etat);
 
   void setEtat(EtatAnnonce etat) {
     this.etat = etat;
   }
 
-  void valider() {
-    etat.valider(annonce);
+  void publier() {
+    etat.publier(this.annonce);
   }
 
-  void accepter(User repondant) {
-    etat.accepter(annonce, repondant);
+  void repondre() {
+    etat.repondre(this.annonce);
   }
 
   void cloturer() {
-    etat.cloturer(annonce);
+    etat.cloturer(this.annonce);
   }
 }
 
-abstract class EtatAnnonce {
-  void valider(Annonce annonce);
-  void accepter(Annonce annonce, User repondant);
-  void cloturer(Annonce annonce);
+class EtatAnnonce {
+  void publier(Annonce a) async {}
+
+  void repondre(Annonce a) async {}
+
+  void cloturer(Annonce a) async {}
 }
 
-class AnnonceEnValidation implements EtatAnnonce {
+class AnnonceNonPublie extends EtatAnnonce {
   @override
-  void valider(Annonce annonce) {
-    AnnonceQueries.createAnnonce(
-      title: annonce.title,
-      description: annonce.description,
-      dateDeb: annonce.dateDeb,
-      dateFin: annonce.dateFin,
-    );
-    annonce.get
+  void publier(Annonce a) async {
+    await AnnonceQueries.createAnnonce(a.titre, a.description, a.dateDeb, a.dateFin, a.auteur);
+    a.controller.setEtat(AnnonceNonRepondu());
   }
 
   @override
-  void accepter(Annonce annonce, User repondant) {
-    throw Exception("Impossible d'accepter une annonce en attente");
+  void repondre(Annonce a) async {
+    // repondre à l'annonce
   }
 
   @override
-  void cloturer(Annonce annonce) {
-    throw Exception("Impossible de cloturer une annonce en attente");
+  void cloturer(Annonce a) async {
+    // supprimer l'annonce
   }
 }
 
-class AnnonceEnAttenteAcceptation implements EtatAnnonce {
+class AnnonceNonRepondu extends EtatAnnonce {
   @override
-  void valider(Annonce annonce) {
-    throw Exception("Impossible de valider une annonce en attente d'acceptation");
+  void publier(Annonce a) async {
+    // publier l'annonce
   }
 
   @override
-  void accepter(Annonce annonce, User repondant) {
-    AnnonceQueries.accepterAnnonce(annonce.id, annonce.repondant!.id);
+  void repondre(Annonce a) async {
+    // repondre à l'annonce
   }
 
   @override
-  void cloturer(Annonce annonce) {
-    throw Exception("Impossible de cloturer une annonce en attente d'acceptation");
+  void cloturer(Annonce a) async {
+    // supprimer l'annonce
   }
 }
 
-class AnnonceAcceptee implements EtatAnnonce {
+class AnnonceRepondu extends EtatAnnonce {
   @override
-  void valider(Annonce annonce) {
-    throw Exception("Impossible de valider une annonce déjà acceptée");
+  void publier(Annonce a) async {
+    // publier l'annonce
   }
 
   @override
-  void accepter(Annonce annonce, User repondant) {
-    throw Exception("Impossible d'accepter une annonce déjà acceptée");
+  void repondre(Annonce a) async {
+    // repondre à l'annonce
   }
 
   @override
-  void cloturer(Annonce annonce) {
-    AnnonceQueries.cloturerAnnonce(annonce.id);
+  void cloturer(Annonce a) async {
+    // supprimer l'annonce
   }
 }

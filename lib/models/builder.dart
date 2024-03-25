@@ -11,34 +11,14 @@ class Builder {
     return user_model.User.fromJson(data);
   }
 
-  static Future<Annonce> buildAnnonceById(String id) async {
-    final user_model.User auteur = await buildUserById(AnnonceQueries.getAnnonceUserPublieById(id) as String);
-    final String repondId = AnnonceQueries.getAnnonceUserRepondById(id) as String;
+  static Future<List<Annonce>> buildAnnonces(String id) async {
+    final data = await AnnonceQueries.getAnnonces().then((value) => value);
 
-    if (repondId.isEmpty) {
-      final user_model.User repond = await buildUserById(repondId);
-      final data = await AnnonceQueries.getAnnonceById(id).then((value) => value.first);
-      return Annonce.fromJson(data, auteur, repondant: repond);
-    }
-
-    final data = await AnnonceQueries.getAnnonceById(id).then((value) => value.first);
-    return Annonce.fromJson(data, auteur);
-  }
-
-  static Future<List<Annonce>> buildAnnonces() async {
-    final data = await AnnonceQueries.getAnnonces();
-    final List<Annonce> annonces = [];
-
+    List<Annonce> annonces = [];
     for (var annonce in data) {
-      final user_model.User auteur = await buildUserById(AnnonceQueries.getAnnonceUserPublieById(annonce['id'] as String) as String);
-      final String repondId = AnnonceQueries.getAnnonceUserRepondById(annonce['id'] as String) as String;
-
-      if (repondId.isEmpty) {
-        final user_model.User repond = await buildUserById(repondId);
-        annonces.add(Annonce.fromJson(annonce, auteur, repondant: repond));
-      } else {
-        annonces.add(Annonce.fromJson(annonce, auteur));
-      }
+      print(annonce);
+      String user_id = await AnnonceQueries.getAnnonceUserPublieById(annonce['id']);
+      annonces.add(Annonce.fromJson(annonce, await buildUserById(user_id), 0));
     }
 
     return annonces;

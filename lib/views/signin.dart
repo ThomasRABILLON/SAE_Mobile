@@ -32,7 +32,7 @@ class _SignInState extends State<SignInView> {
           try {
             await SignIn.signInWithPassword(emailController.text, passwordController.text);
             sm.showSnackBar(const SnackBar(content: Text('Signed in')));
-            Navigator.pushNamed(context, '/profile');
+            Navigator.pushNamed(context, '/createAnnonce');
           } on AuthException catch (e) {
             sm.showSnackBar(SnackBar(content: Text('Sign in failed: ${e.message}')));
           }

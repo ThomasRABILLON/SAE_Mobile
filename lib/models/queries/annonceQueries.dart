@@ -1,17 +1,27 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:sae_mobile/models/queries/userQueries.dart';
+import 'package:sae_mobile/models/user.dart' as user_model;
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class AnnonceQueries {
-  static Future<PostgrestList> createAnnonce({required String title, required String description, required DateTime dateDeb, required DateTime dateFin, }) async {
-    return await supabaseClient.from('ANNONCES').insert({
-      'title': title,
+  static Future<String> createAnnonce(String title, String description, DateTime dateDeb, DateTime dateFin, user_model.User auteur) async {
+    PostgrestList result = await supabaseClient.from('ANNONCES').insert({
+      'titre': title,
       'description': description,
-      'dateDeb': dateDeb.toIso8601String(),
-      'dateFin': dateFin.toIso8601String(),
+      'date_deb': dateDeb.toIso8601String(),
+      'date_fin': dateFin.toIso8601String(),
     }).select('id');
+    if (result.isEmpty) {
+      throw Exception('Failed to create annonce');
+    }
+    String id = result.first['id'] as String;
+    await supabaseClient.from('PUBLIE').insert({
+      'id_a': id,
+      'id_user': auteur.id,
+    });
+    return id;
   }
 
   static Future<PostgrestList> getAnnonces() async {

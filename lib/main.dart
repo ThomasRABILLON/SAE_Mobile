@@ -5,6 +5,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sae_mobile/views/signin.dart';
 import 'package:sae_mobile/views/signup.dart';
 import 'package:sae_mobile/views/profile.dart';
+import 'package:sae_mobile/views/createAnnonce.dart';
+import 'package:sae_mobile/views/annonces.dart';
 
 import 'package:sae_mobile/models/user.dart' as user_model;
 import 'package:sae_mobile/models/builder.dart' as user_builder;
@@ -36,13 +38,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/signup',
+      initialRoute: '/annonces',
       routes: {
         '/signup': (context) => const Scaffold(
           body: SignUpView(),
         ),
         '/signin': (context) => const Scaffold(
           body: SignInView(),
+        ),
+        '/createAnnonce': (context) => Scaffold(
+          body: CreateAnnonce(),
+        ),
+        '/annonces': (context) => Scaffold(
+          body: const AnnoncesView(),
         ),
         '/profile': (context) => Scaffold(
           body: FutureBuilder(
