@@ -23,7 +23,8 @@ class Annonce {
     controller = ControllerAnnonce(this, AnnonceEnValidation());
   }
 
-  factory Annonce.fromJson(Map<String, dynamic> json, User auteur, {User? repondant}) {
+  factory Annonce.fromJson(Map<String, dynamic> json, User auteur,
+      {User? repondant}) {
     return Annonce(
       id: json['id'] as String,
       title: json['title'] as String,
@@ -57,10 +58,10 @@ class Annonce {
 }
 
 class ControllerAnnonce {
-  final Annonce annonce;
-  late final EtatAnnonce etat;
+  Annonce annonce;
+  EtatAnnonce etat;
 
-  const ControllerAnnonce(this.annonce, this.etat);
+  ControllerAnnonce(this.annonce, this.etat);
 
   void setEtat(EtatAnnonce etat) {
     this.etat = etat;
@@ -94,7 +95,7 @@ class AnnonceEnValidation implements EtatAnnonce {
       dateDeb: annonce.dateDeb,
       dateFin: annonce.dateFin,
     );
-    annonce.get
+    // annonce.get
   }
 
   @override
@@ -111,7 +112,8 @@ class AnnonceEnValidation implements EtatAnnonce {
 class AnnonceEnAttenteAcceptation implements EtatAnnonce {
   @override
   void valider(Annonce annonce) {
-    throw Exception("Impossible de valider une annonce en attente d'acceptation");
+    throw Exception(
+        "Impossible de valider une annonce en attente d'acceptation");
   }
 
   @override
@@ -121,7 +123,8 @@ class AnnonceEnAttenteAcceptation implements EtatAnnonce {
 
   @override
   void cloturer(Annonce annonce) {
-    throw Exception("Impossible de cloturer une annonce en attente d'acceptation");
+    throw Exception(
+        "Impossible de cloturer une annonce en attente d'acceptation");
   }
 }
 
