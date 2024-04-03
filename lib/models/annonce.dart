@@ -8,35 +8,27 @@ class Annonce {
   final DateTime dateDeb;
   final DateTime dateFin;
   final User auteur;
-  final User? repondant;
+  late final int etat;
   late AnnonceController controller;
 
-  Annonce(this.id, this.titre, this.description, this.dateDeb, this.dateFin, this.auteur, int etat, {this.repondant}) {
-    switch(etat) {
-      case 0:
-        controller = AnnonceController(this, AnnonceNonPublie());
-        break;
-      case 1:
-        controller = AnnonceController(this, AnnonceNonRepondu());
-        break;
-      case 2:
-        controller = AnnonceController(this, AnnonceRepondu());
-        break;
-    }
+  Annonce(this.id, this.titre, this.description, this.dateDeb, this.dateFin, this.auteur, this.etat) {
+    controller = AnnonceController(this, AnnonceNonPublie());
   }
 
-
-  factory Annonce.fromJson(Map<String, dynamic> data, User auteur, int etat, {User? repondant}) {
+  factory Annonce.fromJson(Map<String, dynamic> json, User auteur) {
     return Annonce(
-      data['id'] as String,
-      data['titre'] as String,
-      data['description'] as String,
-      DateTime.parse(data['date_deb'] as String),
-      DateTime.parse(data['date_fin'] as String),
+      json['id'],
+      json['titre'],
+      json['description'],
+      DateTime.parse(json['dateDeb']),
+      DateTime.parse(json['dateFin']),
       auteur,
-      etat,
-      repondant: repondant,
+      json['etat'],
     );
+  }
+
+  void setEtat(int etat) {
+    this.etat = etat;
   }
 
   void publier() {
@@ -50,6 +42,7 @@ class Annonce {
   void cloturer() {
     controller.cloturer();
   }
+
 }
 
 class AnnonceController {
@@ -86,6 +79,7 @@ class EtatAnnonce {
 class AnnonceNonPublie extends EtatAnnonce {
   @override
   void publier(Annonce a) async {
+    a.setEtat(2);
     await AnnonceQueries.createAnnonce(a.titre, a.description, a.dateDeb, a.dateFin, a.auteur);
     a.controller.setEtat(AnnonceNonRepondu());
   }

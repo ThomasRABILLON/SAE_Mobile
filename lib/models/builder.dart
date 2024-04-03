@@ -12,13 +12,13 @@ class Builder {
   }
 
   static Future<List<Annonce>> buildAnnonces(String id) async {
-    final data = await AnnonceQueries.getAnnonces().then((value) => value);
+    final data = await AnnonceQueries.getAnnoncesSupabase().then((value) => value);
 
     List<Annonce> annonces = [];
     for (var annonce in data) {
       print(annonce);
-      String user_id = await AnnonceQueries.getAnnonceUserPublieById(annonce['id']);
-      annonces.add(Annonce.fromJson(annonce, await buildUserById(user_id), 0));
+      String user_id = await AnnonceQueries.getAnnonceUserPublieByIdSupabase(annonce['id']);
+      annonces.add(Annonce.fromJson(annonce, await buildUserById(user_id)));
     }
 
     return annonces;
