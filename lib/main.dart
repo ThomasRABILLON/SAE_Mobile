@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/models/auth/signin.dart';
+import 'package:sae_mobile/models/queries/distant/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:sae_mobile/views/signin.dart';
@@ -8,9 +9,8 @@ import 'package:sae_mobile/views/profile.dart';
 import 'package:sae_mobile/views/createAnnonce.dart';
 import 'package:sae_mobile/views/annonces.dart';
 
-import 'package:sae_mobile/models/user.dart' as user_model;
-import 'package:sae_mobile/models/builder.dart' as user_builder;
-import 'package:sae_mobile/models/queries/userQueries.dart';
+import 'package:sae_mobile/models/User.dart' as user_model;
+import 'package:sae_mobile/models/Builder.dart' as user_builder;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/annonces',
+      initialRoute: '/signin',
       routes: {
         '/signup': (context) => const Scaffold(
           body: SignUpView(),

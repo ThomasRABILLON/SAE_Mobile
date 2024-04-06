@@ -35,7 +35,7 @@ class _SignUpState extends State<SignUpView> {
         MaterialButton(onPressed: () async {
           final ScaffoldMessengerState sm = ScaffoldMessenger.of(context);
           try {
-            await SignUp.signUpWithPassword(emailController.text, passwordController.text);
+            await SignUp.signUpWithPassword(emailController.text, passwordController.text, usernameController.text);
             sm.showSnackBar(const SnackBar(content: Text('Signed up')));
           } on AuthException catch (e) {
             sm.showSnackBar(SnackBar(content: Text('Sign up failed: ${e.message}')));

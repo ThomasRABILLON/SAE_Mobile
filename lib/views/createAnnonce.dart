@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:sae_mobile/models/user.dart' as user_model;
-import 'package:sae_mobile/models/annonce.dart';
-import 'package:sae_mobile/models/builder.dart' as builder_model;
+import 'package:sae_mobile/models/User.dart' as user_model;
+import 'package:sae_mobile/models/Builder.dart' as builder_model;
 
-import '../models/queries/annonceQueries.dart';
+import 'package:sae_mobile/models/queries/local/annonce.dart' as aq;
 
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
@@ -88,15 +87,17 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
 
             return ElevatedButton(
               onPressed: () async {
-                await AnnonceQueries.createAnnonce(
+                await aq.AnnonceQueries.createAnnonce(
                   _titleController.text,
                   _descriptionController.text,
                   DateTime.parse(_dateDebController.text),
                   DateTime.parse(_dateFinController.text),
-                  user,
+                  1,
+                  1,
+                  1,
                 );
 
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/annonces');
               },
               child: const Text('Create Annonce'),
             );
