@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/models/auth/signin.dart';
+import 'package:sae_mobile/views/accountcreated.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:sae_mobile/views/signin.dart';
@@ -40,8 +41,11 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/home',
         routes: {
-          '/home': (context) => Scaffold(
+          '/': (context) => Scaffold(
                 body: HomePage(),
+              ),
+          '/account_created': (context) => Scaffold(
+                body: AccountCreatedPage(),
               ),
           '/signup': (context) => const Scaffold(
                 body: SignUpView(),

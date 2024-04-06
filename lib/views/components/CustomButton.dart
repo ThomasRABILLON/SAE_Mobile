@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: Colors.blue,
+        backgroundColor: Colors.blue,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -25,8 +25,7 @@ class CustomButton extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10),
-          SvgPicture.asset('assets/arrowup.svg',
-              color: Colors.grey, height: 20, width: 20),
+          SvgPicture.asset('images/arrowup.svg', height: 10, width: 10),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sae_mobile/views/profile.dart';
 import 'package:sae_mobile/views/components/CustomButton.dart';
+import 'package:sae_mobile/views/components/CustomTextField.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +25,11 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Container(
                     alignment: Alignment.topCenter,
-                    child: Image.asset('images/home.png', fit: BoxFit.cover),
+                    child: Image.asset(
+                      'images/home.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
                   ),
                   _buildOne(context),
                 ],
@@ -40,14 +45,12 @@ class _HomePageState extends State<HomePage> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 31, vertical: 44),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(36),
-            topRight: Radius.circular(36),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
         ),
+        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.all(60.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -64,20 +67,12 @@ class _HomePageState extends State<HomePage> {
               },
               child: Text(
                 "J'ai déjà un compte",
-                style: TextStyle(fontSize: 16),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge, // Appliquer le style bodyText1
               ),
             ),
             SizedBox(height: 23),
-            Divider(
-              indent: 14,
-              endIndent: 18,
-            ),
-            SizedBox(height: 10),
-            Text(
-              "ou-se connecter avec",
-              style: TextStyle(fontSize: 16, color: Colors.blueGrey[100]),
-            ),
-            SizedBox(height: 10),
           ],
         ),
       ),

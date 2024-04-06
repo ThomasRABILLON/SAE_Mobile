@@ -66,6 +66,8 @@ flutter:
     - images/home.png
     - images/signin.png
     - images/signup.png
+    - images/arrowup.svg
+    - images/account_created.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
