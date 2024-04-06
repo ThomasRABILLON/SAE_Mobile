@@ -11,7 +11,7 @@ class AnnonceQueries {
       'description': annonce.description,
       'dateDeb': annonce.dateDeb.toIso8601String(),
       'dateFin': annonce.dateFin.toIso8601String(),
-      'idType': 'f138bd6d-332d-47a2-898c-635d59e6e27a',
+      'idType': 1,
       'idEtat': 2,
     }).select('id');
     print("result");
@@ -39,7 +39,7 @@ class AnnonceQueries {
   }
 
   static Future<PostgrestList> getAnnonceNonRepondu() async {
-    final response = await supabaseClient.from('ANNONCES').select().eq('id_etat', 2);
+    final response = await supabaseClient.from('ANNONCES').select().eq('idEtat', 2);
     if (response.isEmpty) {
       throw Exception('Failed to get annonces');
     }
@@ -95,5 +95,21 @@ class AnnonceQueries {
 
   static Future<void> updateAnnonceEtat(String id, int etat) async {
     await supabaseClient.from('ANNONCES').update({'idEtat': etat}).eq('id', id);
+  }
+
+  static Future<void> mettreAvis(String id_a, String id_u, String avis) async {
+    await supabaseClient.from('AVIS').insert({
+      'id_a': id_a,
+      'id_user': id_u,
+      'avis': avis,
+    });
+  }
+
+  static Future<PostgrestList> getAnnonceAvis(String id_a) async {
+    final response = await supabaseClient.from('AVIS').select().eq('id_a', id_a);
+    if (response.isEmpty) {
+      throw Exception('Failed to get avis');
+    }
+    return response;
   }
 }

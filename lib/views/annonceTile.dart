@@ -8,8 +8,9 @@ final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class AnnonceTile extends StatelessWidget {
   final Annonce annonce;
+  final TextEditingController avis = TextEditingController();
 
-  const AnnonceTile({Key? key, required this.annonce}) : super(key: key);
+  AnnonceTile({Key? key, required this.annonce}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,12 @@ class AnnonceTile extends StatelessWidget {
         Text('Date fin : ${DateFormat('dd/MM/yyyy').format(annonce.dateFin)}'),
         Text(annonce.auteur.username),
         Text(annonce.etat.toString()),
+        TextField(
+          controller: avis,
+          decoration: const InputDecoration(hintText: 'Avis'),
+        ),
         MaterialButton(onPressed: () {
-          annonce.cloturer();
+          annonce.mettreAvis(supabaseClient.auth.currentUser!.id, avis.text);
 
           Navigator.pushNamed(context, '/annonces');
           },

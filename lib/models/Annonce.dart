@@ -59,6 +59,10 @@ class Annonce {
     controller.cloturer();
   }
 
+  void mettreAvis(String id_u, String avis) {
+    controller.mettreAvis(id_u, avis);
+  }
+
 }
 
 class AnnonceController {
@@ -82,6 +86,10 @@ class AnnonceController {
   void cloturer() {
     etat.cloturer(this.annonce);
   }
+
+  void mettreAvis(String id_u, String avis) {
+    etat.mettreAvis(this.annonce, id_u, avis);
+  }
 }
 
 class EtatAnnonce {
@@ -91,7 +99,7 @@ class EtatAnnonce {
 
   void cloturer(Annonce a) async {}
 
-  void mettreAvis(Annonce a, User u) async {}
+  void mettreAvis(Annonce a, String id_u, String avis) async {}
 }
 
 class AnnonceNonPublie extends EtatAnnonce {
@@ -99,7 +107,6 @@ class AnnonceNonPublie extends EtatAnnonce {
   void publier(Annonce a) async {
     await local.AnnonceQueries.updateAnnonceEtat(a.id, 2);
     String newId = await dist.AnnonceQueries.publishAnnonce(a);
-    print(newId);
     await local.AnnonceQueries.updateAnnonceId(a.id, newId);
     a.controller.setEtat(AnnonceNonRepondu());
   }
@@ -126,7 +133,7 @@ class AnnonceRepondu extends EtatAnnonce {
 
 class AnnonceCloture extends EtatAnnonce {
   @override
-  void mettreAvis(Annonce a, User u) async {
-    // await dist.AnnonceQueries.mettreAvis(a.id, u.id);
+  void mettreAvis(Annonce a, String id_u, String avis) async {
+    await dist.AnnonceQueries.mettreAvis(a.id, id_u, avis);
   }
 }
