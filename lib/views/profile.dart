@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:sae_mobile/views/signout.dart';
 
-import 'package:sae_mobile/models/user.dart' as user_model;
+import 'package:sae_mobile/models/User.dart' as user_model;
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
 

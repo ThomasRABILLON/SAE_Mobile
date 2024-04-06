@@ -81,8 +81,8 @@ class _SignUpState extends State<SignUpView> {
                         final ScaffoldMessengerState sm =
                             ScaffoldMessenger.of(context);
                         try {
-                          await SignUp.signUpWithPassword(
-                              emailController.text, passwordController.text);
+                          await SignUp.signUpWithPassword(emailController.text,
+                              passwordController.text, usernameController.text);
                           sm.showSnackBar(
                               const SnackBar(content: Text('Bienvenue !')));
                           Navigator.pushNamed(context, '/accountCreated');
