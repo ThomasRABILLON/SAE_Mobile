@@ -1,4 +1,4 @@
-import 'package:sae_mobile/models/Annonce.dart';
+import 'package:sae_mobile/models/annonce.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
@@ -6,6 +6,9 @@ final SupabaseClient supabaseClient = Supabase.instance.client;
 class AnnonceQueries {
   static Future<String> publishAnnonce(Annonce annonce) async {
     print("publishAnnonce");
+    print(annonce.dateDeb.toIso8601String());
+    print(annonce.dateFin.toIso8601String());
+    print(annonce.titre);
     PostgrestList result = await supabaseClient.from('ANNONCES').insert({
       'titre': annonce.titre,
       'description': annonce.description,
@@ -38,8 +41,18 @@ class AnnonceQueries {
     return response;
   }
 
+  static Future<PostgrestList> getAnnoncesByType(String id) async {
+    final response =
+        await supabaseClient.from('ANNONCES').select().eq('idType', id);
+    if (response.isEmpty) {
+      throw Exception('Aucune annonce de ce type');
+    }
+    return response;
+  }
+
   static Future<PostgrestList> getAnnonceNonRepondu() async {
-    final response = await supabaseClient.from('ANNONCES').select().eq('idEtat', 2);
+    final response =
+        await supabaseClient.from('ANNONCES').select().eq('idEtat', 2);
     if (response.isEmpty) {
       throw Exception('Failed to get annonces');
     }
@@ -47,11 +60,15 @@ class AnnonceQueries {
   }
 
   static Future<PostgrestList> getAnnonceRepondu(String id_u) async {
-    final ids_a = await supabaseClient.from('REPONDS').select().eq('id_user', id_u);
+    final ids_a =
+        await supabaseClient.from('REPONDS').select().eq('id_user', id_u);
     if (ids_a.isEmpty) {
       throw Exception('Failed to get annonces');
     }
-    final response = await supabaseClient.from('ANNONCES').select().inFilter('id', ids_a.map((e) => e['id_a']).toList());
+    final response = await supabaseClient
+        .from('ANNONCES')
+        .select()
+        .inFilter('id', ids_a.map((e) => e['id_a']).toList());
     if (response.isEmpty) {
       throw Exception('Failed to get annonces');
     }
@@ -59,11 +76,14 @@ class AnnonceQueries {
   }
 
   static Future<PostgrestList> getAnnonceCloturer(String id_u) async {
-    final ids_a = await supabaseClient.from('REPONDS').select().eq('id_user', id_u);
+    final ids_a =
+        await supabaseClient.from('REPONDS').select().eq('id_user', id_u);
     if (ids_a.isEmpty) {
       throw Exception('Failed to get annonces');
     }
-    final response = await supabaseClient.from('ANNONCES').select().inFilter('id', ids_a.map((e) => e['id_a']).where((e) => e['id_etat'] == 3).toList());
+    final response = await supabaseClient.from('ANNONCES').select().inFilter(
+        'id',
+        ids_a.map((e) => e['id_a']).where((e) => e['id_etat'] == 3).toList());
     if (response.isEmpty) {
       throw Exception('Failed to get annonces');
     }
@@ -71,7 +91,8 @@ class AnnonceQueries {
   }
 
   static Future<PostgrestList> getAnnonceById(String id) async {
-    final response = await supabaseClient.from('ANNONCES').select().eq('id', id);
+    final response =
+        await supabaseClient.from('ANNONCES').select().eq('id', id);
     if (response.isEmpty) {
       throw Exception('Failed to get annonce');
     }
@@ -79,7 +100,8 @@ class AnnonceQueries {
   }
 
   static Future<String> getAuteurAnnonce(String id) async {
-    final response = await supabaseClient.from('PUBLIE').select().eq('id_a', id);
+    final response =
+        await supabaseClient.from('PUBLIE').select().eq('id_a', id);
     if (response.isEmpty) {
       throw Exception('Failed to get auteur');
     }
@@ -106,7 +128,8 @@ class AnnonceQueries {
   }
 
   static Future<PostgrestList> getAnnonceAvis(String id_a) async {
-    final response = await supabaseClient.from('AVIS').select().eq('id_a', id_a);
+    final response =
+        await supabaseClient.from('AVIS').select().eq('id_a', id_a);
     if (response.isEmpty) {
       throw Exception('Failed to get avis');
     }

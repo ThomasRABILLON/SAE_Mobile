@@ -23,8 +23,8 @@ class CustomTextField extends StatelessWidget {
           filled: true,
           fillColor: Color.fromRGBO(243, 244, 245, 1),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(color: Color.fromRGBO(214, 214, 214, 1)),
+            borderRadius: BorderRadius.circular(36.0),
+            borderSide: BorderSide(color: Color.fromRGBO(231, 231, 231, 1)),
           ),
         ),
       ),

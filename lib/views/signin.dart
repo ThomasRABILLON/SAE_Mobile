@@ -33,7 +33,7 @@ class _SignInState extends State<SignInView> {
                     child: IconButton(
                       icon: Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, '/');
                       },
                     ),
                   ),
@@ -74,7 +74,7 @@ class _SignInState extends State<SignInView> {
                 await SignIn.signInWithPassword(
                     emailController.text, passwordController.text);
                 sm.showSnackBar(const SnackBar(content: Text('Signed in')));
-                Navigator.pushNamed(context, '/profile');
+                Navigator.pushNamed(context, '/categorie');
               } on AuthException catch (e) {
                 sm.showSnackBar(
                     SnackBar(content: Text('Sign in failed: ${e.message}')));
