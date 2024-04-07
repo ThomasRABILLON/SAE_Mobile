@@ -4,13 +4,24 @@ Groupe : RABILLON Thomas, RAVIART Alexandre
 
 ## Fonctionnalité implémentée
 
-Je sais plus
+- Authentification : Possibilité de se connecter et de s'inscrire en relation avec Supabase, et également de se déconnecter.
+- Publication d’annonces : Tout les utilisateurs peuvent publier des annonces pour demander à emprunter un bien en spécifiant la catégorie. Chaque annonce est stockée localement sur le smartphone avec sqflite avant d’être synchronisé sur Supabase.
+- Consultation d’annonces pour prêt : Les utilisateurs prêteurs peuvent consulter les annonces publiées et choisir de venir en aide en répondant à ces annonces. Le bien est alors marqué comme répondu, puis après a la fin du prêt, les annonces sont clôturées par le demandeur.
+- Gestion des états d'une annonces : Utilisation du pattern state.
+- Donner un avis : je peux donner un avis sur le produit une fois l'annonce cloturé ainsi que sur le prêteur.
+- Suivi des annonces : Les utilisateurs peuvent suivre l’état de leurs annonces (Répondue, Cloturer, Non Repondue) et des réservations via "Mes reservations" depuis l'onglet profil.
+- Suivi des prets : Les utilisateurs peuvent suivre l’état de leurs prêts via "Mes prets" depuis l'onglet profil.
+- Consultation des avis : L'utilisateur peut consulter les avis qu'on lui donnent depuis la page profil.
 
 ## Lancement du projet
 
 ### Avec les commandes Flutter
 Si tu connais les commandes flutter :
 
+```
+flutter pub get
+flutter run
+```
 
 ### Avec Android Studio
 
