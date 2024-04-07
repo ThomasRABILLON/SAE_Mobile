@@ -1,5 +1,5 @@
 import 'package:sae_mobile/models/Objet.dart';
-import 'package:sae_mobile/models/queries/distant/annonce.dart';
+import 'package:sae_mobile/models/queries/local/annonce.dart';
 
 class Utils {
   /// Vérifie si un objet est réservable.
