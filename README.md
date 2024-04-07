@@ -18,7 +18,6 @@ Groupe : RABILLON Thomas, RAVIART Alexandre
 ## Lancement du projet
 
 ### Avec les commandes Flutter
-Si tu connais les commandes flutter :
 
 ```
 flutter pub get
