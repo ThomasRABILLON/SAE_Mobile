@@ -1,6 +1,5 @@
 import 'package:sae_mobile/models/Objet.dart';
 import 'package:sae_mobile/models/TypeAnnonce.dart';
-import 'package:sae_mobile/models/annonce.dart';
 import 'package:sae_mobile/models/queries/distant/user.dart' as uqd;
 import 'package:sae_mobile/models/queries/distant/annonce.dart' as aqd;
 
@@ -9,9 +8,9 @@ import 'package:sae_mobile/models/queries/local/objet.dart';
 import 'package:sae_mobile/models/queries/local/typeAnnonce.dart';
 
 import 'package:sae_mobile/models/User.dart' as user_model;
+import 'package:sae_mobile/models/Annonce.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sae_mobile/models/queries/distant/typeAnnonce.dart' as tqd;
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
@@ -25,8 +24,7 @@ class Builder {
   ///
   /// Retourne un objet de type [user_model.User].
   static Future<user_model.User> buildUserById(String id) async {
-    final data =
-        await uqd.UserQueries.getUserById(id).then((value) => value.first);
+    final data = await uqd.UserQueries.getUserById(id).then((value) => value.first);
 
     return user_model.User.fromJson(data);
   }
@@ -46,26 +44,11 @@ class Builder {
     return annonces;
   }
 
-  static Future<List<Annonce>> buildAnnoncesDistantByType(String type) async {
-    final data =
-        await aqd.AnnonceQueries.getAnnoncesByType(type).then((value) => value);
-
-    List<Annonce> annonces = [];
-    for (var annonce in data) {
-      print("les annonces du type $type sont : $annonce");
-      String user_id = await aqd.AnnonceQueries.getAuteurAnnonce(annonce['id']);
-      annonces.add(Annonce.fromJson(annonce, (await buildUserById(user_id))));
-    }
-
-    return annonces;
-  }
-
   /// Construit une liste d'annonces non répondues à partir de données distantes.
   ///
   /// Retourne une liste d'annonces.
   static Future<List<Annonce>> buildAnnoncesDistantNonRepondu() async {
-    final data =
-        await aqd.AnnonceQueries.getAnnonceNonRepondu().then((value) => value);
+    final data = await aqd.AnnonceQueries.getAnnonceNonRepondu().then((value) => value);
 
     List<Annonce> annonces = [];
     for (var annonce in data) {
@@ -82,8 +65,7 @@ class Builder {
   ///
   /// Retourne une liste d'annonces.
   static Future<List<Annonce>> buildAnnoncesDistantRepondu(String id) async {
-    final data =
-        await aqd.AnnonceQueries.getAnnonceRepondu(id).then((value) => value);
+    final data = await aqd.AnnonceQueries.getAnnonceRepondu(id).then((value) => value);
 
     List<Annonce> annonces = [];
     for (var annonce in data) {
@@ -100,11 +82,9 @@ class Builder {
   ///
   /// Retourne une liste d'annonces.
   static Future<Annonce> buildAnnonceByIdDistant(String id) async {
-    final data = await aqd.AnnonceQueries.getAnnonceById(id)
-        .then((value) => value.first);
+    final data = await aqd.AnnonceQueries.getAnnonceById(id).then((value) => value.first);
 
-    String user_id = await aqd.AnnonceQueries.getAnnonceById(data['id'])
-        .then((value) => value.first['id_user']);
+    String user_id = await aqd.AnnonceQueries.getAnnonceById(data['id']).then((value) => value.first['id_user']);
     return Annonce.fromJson(data, await buildUserById(user_id));
   }
 
@@ -114,8 +94,7 @@ class Builder {
     List<Annonce> annonces = [];
     print(data);
     for (var annonce in data) {
-      annonces.add(Annonce.fromJson(
-          annonce, await buildUserById(supabaseClient.auth.currentUser!.id)));
+      annonces.add(Annonce.fromJson(annonce, await buildUserById(supabaseClient.auth.currentUser!.id)));
     }
 
     return annonces;
@@ -125,8 +104,7 @@ class Builder {
   static Future<Annonce> buildAnnonceByIdLocal(String id) async {
     final data = await aql.AnnonceQueries.getAnnonceById(id);
 
-    return Annonce.fromJson(
-        data, await buildUserById(supabaseClient.auth.currentUser!.id));
+    return Annonce.fromJson(data, await buildUserById(supabaseClient.auth.currentUser!.id));
   }
 
   /// Construit une liste d'objets à partir de données locales.
@@ -147,25 +125,10 @@ class Builder {
   ///
   /// Retourne une liste de types d'annonces.
   static Future<List<TypeAnnonce>> buildTypesAnnonce() async {
-    final data =
-        await TypeAnnoncesQueries.getTypeAnnonces().then((value) => value);
+    final data = await TypeAnnoncesQueries.getTypeAnnonces().then((value) => value);
 
     List<TypeAnnonce> typesAnnonce = [];
     for (var typeAnnonce in data) {
-      print('la categorie est : $typeAnnonce');
-      typesAnnonce.add(TypeAnnonce.fromJson(typeAnnonce));
-    }
-
-    return typesAnnonce;
-  }
-
-  static Future<List<TypeAnnonce>> buildTypesAnnonceDistant() async {
-    final data =
-        await tqd.TypeAnnonceQueries.getTypeAnnonces().then((value) => value);
-
-    List<TypeAnnonce> typesAnnonce = [];
-    for (var typeAnnonce in data) {
-      print(typeAnnonce);
       typesAnnonce.add(TypeAnnonce.fromJson(typeAnnonce));
     }
 

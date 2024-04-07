@@ -17,73 +17,31 @@ class _SignInState extends State<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  Image.asset('images/signin.png',
-                      fit: BoxFit.cover, width: double.infinity),
-                  Positioned(
-                    top: 10.0,
-                    left: 10.0,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/');
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _buildForm(context),
-          ],
+    return Column(
+      children: [
+        TextField(
+          controller: emailController,
+          decoration: const InputDecoration(hintText: 'Email'),
         ),
-      ),
-    );
-  }
-
-  Widget _buildForm(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 29, vertical: 34),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(36),
-          topRight: Radius.circular(36),
+        TextField(
+          controller: passwordController,
+          obscureText: true,
+          decoration: const InputDecoration(hintText: 'Password'),
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(height: 10),
-          CustomTextField(controller: emailController, hintText: 'Email'),
-          SizedBox(height: 10),
-          CustomTextField(
-              controller: passwordController,
-              hintText: 'Mot de passe',
-              obscureText: true),
-          SizedBox(height: 10),
-          CustomButton(
-            onPressed: () async {
-              final ScaffoldMessengerState sm = ScaffoldMessenger.of(context);
-              try {
-                await SignIn.signInWithPassword(
-                    emailController.text, passwordController.text);
-                sm.showSnackBar(const SnackBar(content: Text('Signed in')));
-                Navigator.pushNamed(context, '/categorie');
-              } on AuthException catch (e) {
-                sm.showSnackBar(
-                    SnackBar(content: Text('Sign in failed: ${e.message}')));
-              }
-            },
-            buttonText: "Se connecter",
-          ),
-        ],
-      ),
+        MaterialButton(onPressed: () async {
+          final ScaffoldMessengerState sm = ScaffoldMessenger.of(context);
+          try {
+            await SignIn.signInWithPassword(emailController.text, passwordController.text);
+            sm.showSnackBar(const SnackBar(content: Text('Signed in')));
+            Navigator.pushNamed(context, '/profile');
+          } on AuthException catch (e) {
+            sm.showSnackBar(SnackBar(content: Text('Sign in failed: ${e.message}')));
+          }
+        }, child: const Text('Sign In')),
+        MaterialButton(onPressed: () {
+          Navigator.pushNamed(context, '/signup');
+        }, child: const Text('Sign Up')),
+      ],
     );
   }
 }

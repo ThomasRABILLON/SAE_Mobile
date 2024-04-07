@@ -12,8 +12,7 @@ class Annonce {
   late final int etat;
   late AnnonceController controller;
 
-  Annonce(this.id, this.titre, this.description, this.dateDeb, this.dateFin,
-      this.auteur, this.etat) {
+  Annonce(this.id, this.titre, this.description, this.dateDeb, this.dateFin, this.auteur, this.etat) {
     switch (etat) {
       case 1:
         controller = AnnonceController(this, AnnonceNonPublie());
@@ -63,6 +62,7 @@ class Annonce {
   void mettreAvis(String id_u, String avis) {
     controller.mettreAvis(id_u, avis);
   }
+
 }
 
 class AnnonceController {

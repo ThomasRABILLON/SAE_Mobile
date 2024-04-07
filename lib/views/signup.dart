@@ -40,7 +40,7 @@ class _SignUpState extends State<SignUpView> {
           child: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/home');
             },
           ),
         ),
@@ -62,7 +62,7 @@ class _SignUpState extends State<SignUpView> {
                 children: [
                   CustomTextField(
                     controller: usernameController,
-                    hintText: 'pseudonyme',
+                    hintText: 'email',
                   ),
                   SizedBox(height: 10.0),
                   CustomTextField(
@@ -71,7 +71,7 @@ class _SignUpState extends State<SignUpView> {
                   ),
                   SizedBox(height: 10.0),
                   CustomTextField(
-                    controller: passwordController,
+                    controller: emailController,
                     hintText: 'mot de passe',
                   ),
                   SizedBox(height: 10.0),

@@ -24,37 +24,6 @@ class _ProfileState extends State<ProfileView> {
         Text('Email: ${widget.user.email}'),
         Text('Name: ${widget.user.username}'),
         const SignOut(),
-        SizedBox(height: 20), // Add some space
-        // Add your buttons
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Rounded corners
-            ),
-            minimumSize:
-                Size(double.infinity, 50), // Full width and height of 50
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/annonces',
-                arguments: {'function': 'mes reservations'});
-          },
-          child: Text('Mes Reservations'),
-        ),
-        SizedBox(height: 10), // Add some space
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Rounded corners
-            ),
-            minimumSize:
-                Size(double.infinity, 50), // Full width and height of 50
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, '/annonces',
-                arguments: {'function': 'mes annonces'});
-          },
-          child: Text('Mes Annonces'),
-        ),
       ],
     );
   }

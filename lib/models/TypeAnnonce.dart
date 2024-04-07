@@ -6,7 +6,7 @@ class TypeAnnonce {
 
   factory TypeAnnonce.fromJson(Map<String, dynamic> json) {
     return TypeAnnonce(
-      id: json['id'],
+      id: json['idType'],
       libelle: json['libelleType'],
     );
   }

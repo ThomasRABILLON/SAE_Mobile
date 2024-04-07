@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/models/auth/signin.dart';
 import 'package:sae_mobile/views/accountcreated.dart';
@@ -11,10 +10,9 @@ import 'package:sae_mobile/views/profile.dart';
 import 'package:sae_mobile/views/home.dart';
 import 'package:sae_mobile/views/createAnnonce.dart';
 import 'package:sae_mobile/views/annonces.dart';
-import 'package:sae_mobile/views/category.dart';
+
 import 'package:sae_mobile/models/User.dart' as user_model;
 import 'package:sae_mobile/models/Builder.dart' as user_builder;
-import 'package:sae_mobile/views/components/Navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,38 +55,12 @@ class MyApp extends StatelessWidget {
           '/signin': (context) => const Scaffold(
                 body: SignInView(),
               ),
-          '/categorie': (context) => Scaffold(
-                body: CategoryListPage(),
-                bottomNavigationBar: Navbar(
-                  selectedIndex: 0,
-                  onItemTapped: (index) {},
-                ),
-              ),
           '/createAnnonce': (context) => Scaffold(
                 body: CreateAnnonce(),
-                bottomNavigationBar: Navbar(
-                  selectedIndex: 2,
-                  onItemTapped: (index) {},
-                ),
               ),
-          '/accountCreated': (context) => Scaffold(
-                body: AccountCreatedPage(),
+          '/annonces': (context) => Scaffold(
+                body: const AnnoncesView(),
               ),
-          '/annonces': (context) {
-            final Map<String, String> args = ModalRoute.of(context)!
-                .settings
-                .arguments as Map<String, String>;
-            final String categoryId = args['categoryId']!;
-            final String categoryName = args['categoryName']!;
-            return Scaffold(
-              body: AnnoncesView(
-                  categoryId: categoryId, categoryName: categoryName),
-              bottomNavigationBar: Navbar(
-                selectedIndex: 0,
-                onItemTapped: (index) {},
-              ),
-            );
-          },
           '/profile': (context) => Scaffold(
                   body: FutureBuilder(
                 future: UserQueries.getUserById(
