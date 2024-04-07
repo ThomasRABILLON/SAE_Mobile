@@ -1,16 +1,41 @@
-# sae_mobile
+# SAE 4.04 Développement Mobile
 
-SAE Mobile
+Groupe : RABILLON Thomas, RAVIART Alexandre
 
-## Getting Started
+## Fonctionnalité implémentée
 
-This project is a starting point for a Flutter application.
+Je sais plus
 
-A few resources to get you started if this is your first Flutter project:
+## Lancement du projet
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Avec les commandes Flutter
+Si tu connais les commandes flutter :
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+### Avec Android Studio
+
+#### Prérequis :
+
+Un téléphone ou un émulateur. Le projet ne pourra pas fonctionner sans (sur chrome) à cause de sqflite.
+
+## Documentations
+
+### Modèle Conceptuel de Données des bases de données
+
+#### Centrale :
+
+![mcd bdd centrale](./imgs_md/mcd_bd_centrale.png)
+
+#### Locale :
+
+![mcd bdd centrale](./imgs_md/mcd_bd_local.png)
+
+### Diagramme d’états de nos objets
+
+#### Annonce :
+
+![diagramme etat annonce](./imgs_md/etat.png)
+
+### Diagramme des classes de nos objets
+
+![diagramme de classe](./imgs_md/diagramme_classe.png)
