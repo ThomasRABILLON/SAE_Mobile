@@ -63,7 +63,7 @@ class AnnonceQueries {
     final ids_a =
         await supabaseClient.from('REPONDS').select().eq('id_user', id_u);
     if (ids_a.isEmpty) {
-      throw Exception('Failed to get annonces');
+      throw Exception("Pas d'annonces repondues");
     }
     final response = await supabaseClient
         .from('ANNONCES')
