@@ -23,13 +23,28 @@ class _HomePageState extends State<HomePage> {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
-                  Container(
-                    alignment: Alignment.topCenter,
-                    child: Image.asset(
-                      'images/home.png',
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
+                  Stack(
+                    children: [
+                      Container(
+                        alignment: Alignment.topCenter,
+                        child: Image.asset(
+                          'images/home.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 10.0,
+                        left: 10.0,
+                        child: Text(
+                          'Allo',
+                          style: TextStyle(
+                            fontSize: 36,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   _buildOne(context),
                 ],
