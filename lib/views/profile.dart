@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:sae_mobile/views/annonces.dart';
 import 'package:sae_mobile/views/signout.dart';
 
 import 'package:sae_mobile/models/User.dart' as user_model;
@@ -24,36 +24,52 @@ class _ProfileState extends State<ProfileView> {
         Text('Email: ${widget.user.email}'),
         Text('Name: ${widget.user.username}'),
         const SignOut(),
-        SizedBox(height: 20), // Add some space
+        SizedBox(height: 20),
         // Add your buttons
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Rounded corners
+              borderRadius: BorderRadius.circular(20),
             ),
-            minimumSize:
-                Size(double.infinity, 50), // Full width and height of 50
+            minimumSize: Size(double.infinity, 50),
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/annonces',
-                arguments: {'function': 'mes reservations'});
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AnnoncesView(
+                  categoryId: '1',
+                  categoryName: 'Mes reservations',
+                  isUserAnnonces: true,
+                  isReponduAnnonces: false,
+                ),
+              ),
+            );
           },
           child: Text('Mes Reservations'),
         ),
-        SizedBox(height: 10), // Add some space
+        SizedBox(height: 10),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Rounded corners
+              borderRadius: BorderRadius.circular(20),
             ),
-            minimumSize:
-                Size(double.infinity, 50), // Full width and height of 50
+            minimumSize: Size(double.infinity, 50),
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/annonces',
-                arguments: {'function': 'mes annonces'});
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AnnoncesView(
+                  categoryId: '1',
+                  categoryName: 'Mes prets',
+                  isUserAnnonces: false,
+                  isReponduAnnonces: true,
+                ),
+              ),
+            );
           },
-          child: Text('Mes Annonces'),
+          child: Text('Mes Prets'),
         ),
       ],
     );

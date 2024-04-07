@@ -9,9 +9,15 @@ final SupabaseClient supabaseClient = Supabase.instance.client;
 class AnnoncesView extends StatefulWidget {
   final String categoryId;
   final String categoryName;
+  final bool isUserAnnonces;
+  final bool isReponduAnnonces;
 
   const AnnoncesView(
-      {Key? key, required this.categoryId, required this.categoryName})
+      {Key? key,
+      required this.categoryId,
+      required this.categoryName,
+      this.isUserAnnonces = false,
+      this.isReponduAnnonces = false})
       : super(key: key);
 
   @override
@@ -26,8 +32,17 @@ class _AnnoncesViewState extends State<AnnoncesView> {
         title: Text(widget.categoryName),
       ),
       body: FutureBuilder(
-        future:
-            builder_model.Builder.buildAnnoncesDistantByType(widget.categoryId),
+        future: widget.isUserAnnonces
+            ? builder_model.Builder.buildAnnoncesLocalUtilisateur(
+                supabaseClient.auth.currentUser!.id,
+              )
+            : widget.isReponduAnnonces
+                ? builder_model.Builder.buildAnnoncesDistantRepondu(
+                    supabaseClient.auth.currentUser!.id,
+                  )
+                : builder_model.Builder.buildAnnoncesDistantByType(
+                    widget.categoryId,
+                  ),
         builder: (context, AsyncSnapshot<List<Annonce>> snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
