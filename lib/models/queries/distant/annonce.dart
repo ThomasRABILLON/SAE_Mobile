@@ -14,7 +14,7 @@ class AnnonceQueries {
       'description': annonce.description,
       'dateDeb': annonce.dateDeb.toIso8601String(),
       'dateFin': annonce.dateFin.toIso8601String(),
-      'idType': 1,
+      'idType': 2,
       'idEtat': 2,
     }).select('id');
     print("result");
@@ -120,6 +120,15 @@ class AnnonceQueries {
   }
 
   static Future<void> mettreAvis(String id_a, String id_u, String avis) async {
+    final existingReview = await supabaseClient
+        .from('AVIS')
+        .select()
+        .eq('id_a', id_a)
+        .eq('id_user', id_u);
+
+    if (existingReview.isNotEmpty) {
+      throw Exception('Vous avez déjà soumis un avis pour cette annonce.');
+    }
     await supabaseClient.from('AVIS').insert({
       'id_a': id_a,
       'id_user': id_u,
@@ -132,9 +141,6 @@ class AnnonceQueries {
         .from('AVIS')
         .select('avis, users:id_user (username)')
         .eq('id_a', id_a);
-    if (response.isEmpty) {
-      throw Exception('Failed to get avis');
-    }
     return response;
   }
 }

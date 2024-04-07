@@ -17,16 +17,16 @@ class Navbar extends StatelessWidget {
           onItemTapped(index);
           switch (index) {
             case 0:
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/categorie');
               break;
             case 1:
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/categorie');
               break;
             case 2:
               Navigator.pushNamed(context, '/createAnnonce');
               break;
             case 3:
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/categorie');
               break;
             case 4:
               Navigator.pushNamed(context, '/profile');

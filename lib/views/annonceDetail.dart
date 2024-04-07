@@ -78,17 +78,21 @@ class _DetailAnnoncePageState extends State<DetailAnnoncePage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(snapshot.data![index]['avis']),
-                          subtitle: Text(
-                              'Par ${snapshot.data![index]['users']['username']}'),
-                        );
-                      },
-                    );
+                    if (snapshot.data!.length == 0) {
+                      return Text("Pas encore d'avis sur le produit");
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(snapshot.data![index]['avis']),
+                            subtitle: Text(
+                                'Par ${snapshot.data![index]['users']['username']}'),
+                          );
+                        },
+                      );
+                    }
                   }
                 },
               ),
@@ -98,13 +102,20 @@ class _DetailAnnoncePageState extends State<DetailAnnoncePage> {
               ),
               CustomButton(
                 onPressed: () async {
-                  await widget.annonce.mettreAvis(
-                      supabaseClient.auth.currentUser!.id, avisController.text);
-                  avisController.clear();
-                  setState(() {
-                    futureAvis =
-                        adq.AnnonceQueries.getAnnonceAvis(widget.annonce.id);
-                  });
+                  try {
+                    await widget.annonce.mettreAvis(
+                        supabaseClient.auth.currentUser!.id,
+                        avisController.text);
+                    avisController.clear();
+                    setState(() {
+                      futureAvis =
+                          adq.AnnonceQueries.getAnnonceAvis(widget.annonce.id);
+                    });
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())),
+                    );
+                  }
                 },
                 buttonText: 'cloturer',
               ),

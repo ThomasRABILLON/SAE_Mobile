@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => Scaffold(
                 body: HomePage(),
               ),
-          '/account_created': (context) => Scaffold(
+          '/accountCreated': (context) => Scaffold(
                 body: AccountCreatedPage(),
               ),
           '/signup': (context) => const Scaffold(
@@ -71,9 +71,6 @@ class MyApp extends StatelessWidget {
                   onItemTapped: (index) {},
                 ),
               ),
-          '/accountCreated': (context) => Scaffold(
-                body: AccountCreatedPage(),
-              ),
           '/annonces': (context) {
             final Map<String, String> args = ModalRoute.of(context)!
                 .settings
@@ -90,20 +87,25 @@ class MyApp extends StatelessWidget {
             );
           },
           '/profile': (context) => Scaffold(
-                  body: FutureBuilder(
-                future: UserQueries.getUserById(
-                    supabaseClient.auth.currentUser!.id),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-                  final user = user_model.User.fromJson(snapshot.data![0]);
-                  return ProfileView(user: user);
-                },
-              )),
+                body: FutureBuilder(
+                  future: UserQueries.getUserById(
+                      supabaseClient.auth.currentUser!.id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    final user = user_model.User.fromJson(snapshot.data![0]);
+                    return ProfileView(user: user);
+                  },
+                ),
+                bottomNavigationBar: Navbar(
+                  selectedIndex: 4,
+                  onItemTapped: (index) {},
+                ),
+              ),
         });
   }
 }
