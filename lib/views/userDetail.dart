@@ -1,38 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:supabase/supabase.dart';
-import 'package:sae_mobile/models/annonce.dart';
-import 'package:sae_mobile/models/queries/distant/annonce.dart' as adq;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sae_mobile/models/queries/distant/user.dart' as udq;
 import 'package:sae_mobile/views/components/CustomButton.dart';
 import 'package:sae_mobile/views/components/CustomTextField.dart';
-import 'package:sae_mobile/views/userDetail.dart';
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
-class DetailAnnoncePage extends StatefulWidget {
-  final Annonce annonce;
+class DetailUserPage extends StatefulWidget {
+  final String userId;
 
-  const DetailAnnoncePage({Key? key, required this.annonce}) : super(key: key);
+  const DetailUserPage({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _DetailAnnoncePageState createState() => _DetailAnnoncePageState();
+  _DetailUserPageState createState() => _DetailUserPageState();
 }
 
-class _DetailAnnoncePageState extends State<DetailAnnoncePage> {
+class _DetailUserPageState extends State<DetailUserPage> {
   late Future<PostgrestList> futureAvis;
   final TextEditingController avisController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    futureAvis = adq.AnnonceQueries.getAnnonceAvis(widget.annonce.id);
+    futureAvis = udq.UserQueries.getUtilisateurAvis(widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.annonce.titre),
+        title: Text("Détails de l'utilisateur"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -40,32 +37,6 @@ class _DetailAnnoncePageState extends State<DetailAnnoncePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Description:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(widget.annonce.description),
-              SizedBox(height: 10),
-              Text(
-                'Auteur:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          DetailUserPage(userId: widget.annonce.auteur.id),
-                    ),
-                  );
-                },
-                child: Text(
-                  widget.annonce.auteur.username,
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
-              SizedBox(height: 10),
               Text(
                 'Avis:',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -98,15 +69,18 @@ class _DetailAnnoncePageState extends State<DetailAnnoncePage> {
               ),
               CustomButton(
                 onPressed: () async {
-                  await widget.annonce.mettreAvis(
-                      supabaseClient.auth.currentUser!.id, avisController.text);
+                  await udq.UserQueries.mettreAvisUtilisateur(
+                    supabaseClient.auth.currentUser!.id,
+                    widget.userId,
+                    avisController.text,
+                  );
                   avisController.clear();
                   setState(() {
                     futureAvis =
-                        adq.AnnonceQueries.getAnnonceAvis(widget.annonce.id);
+                        udq.UserQueries.getUtilisateurAvis(widget.userId);
                   });
                 },
-                buttonText: 'cloturer',
+                buttonText: 'Publier la critique',
               ),
             ],
           ),
