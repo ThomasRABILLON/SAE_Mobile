@@ -155,6 +155,17 @@ class Builder {
     return objets;
   }
 
+  /// Construit un objet à partir de son id.
+  ///
+  /// [id] est l'id de l'objet.
+  ///
+  /// Retourne un objet de type [Objet].
+  static Future<Objet> buildObjetById(int id) async {
+    final data = await ObjetQueries.getObjetById(id);
+
+    return Objet.fromJson(data);
+  }
+
   /// Construit une liste de types d'annonces à partir de données locales.
   ///
   /// Retourne une liste de types d'annonces.
