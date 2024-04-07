@@ -128,8 +128,10 @@ class AnnonceQueries {
   }
 
   static Future<PostgrestList> getAnnonceAvis(String id_a) async {
-    final response =
-        await supabaseClient.from('AVIS').select().eq('id_a', id_a);
+    final response = await supabaseClient
+        .from('AVIS')
+        .select('avis, users:id_user (username)')
+        .eq('id_a', id_a);
     if (response.isEmpty) {
       throw Exception('Failed to get avis');
     }

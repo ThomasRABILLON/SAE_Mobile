@@ -60,7 +60,7 @@ class Annonce {
     controller.cloturer();
   }
 
-  void mettreAvis(String id_u, String avis) {
+  Future<void> mettreAvis(String id_u, String avis) async {
     controller.mettreAvis(id_u, avis);
   }
 }
