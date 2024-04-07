@@ -106,6 +106,18 @@ class Builder {
     return annonces;
   }
 
+  /// Construit une annonce à partir de son id.
+  ///
+  /// [id] est l'id de l'annonce.
+  ///
+  /// Retourne un objet de type [Annonce].
+  static Future<Annonce> buildAnnonceById(String id) async {
+    final data = await aql.AnnonceQueries.getAnnonceById(id);
+
+    String user_id = await aqd.AnnonceQueries.getAuteurAnnonce(data['id']);
+    return Annonce.fromJson(data, await buildUserById(user_id));
+  }
+
   /// Construit une liste d'annonces par id de l'annonce à partir de données distantes.
   ///
   /// [id] est l'id de l'annonce.

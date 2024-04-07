@@ -66,7 +66,7 @@ class _AnnoncesViewState extends State<AnnoncesView> {
                       );
                     },
                     child: Container(
-                      height: 200,
+                      height: 120,
                       child: Card(
                         margin: EdgeInsets.all(10.0),
                         child: Row(

@@ -1,7 +1,7 @@
 import 'package:sae_mobile/database/DatabaseHelper.dart';
 
 class AnnonceQueries {
-  static Future<void> createAnnonce(
+  static Future<Map<String, dynamic>> createAnnonce(
       String id_u,
       String titre,
       String description,
@@ -26,6 +26,11 @@ class AnnonceQueries {
       'id_a': id_a,
       'id_u': id_u,
     });
+
+    // Get the created announcement
+    final List<Map<String, dynamic>> annonces =
+        await db.query('ANNONCES', where: 'id = ?', whereArgs: [id_a]);
+    return annonces.first;
   }
 
   static Future<List<Map<String, dynamic>>> getAnnonces() async {
