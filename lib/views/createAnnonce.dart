@@ -34,8 +34,9 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Create Annonce'),
+            Text("Créer l'annonce"),
             CustomTextField(controller: _titleController, hintText: 'Titre'),
             CustomTextField(
                 controller: _descriptionController, hintText: 'Description'),
@@ -97,6 +98,7 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
                     setState(() {
                       _selectedTypeAnnonceIndex = newIndex;
                     });
+                    print(_selectedTypeAnnonceIndex);
                   },
                   hint: Text('Selectionne une catégorie'),
                 );

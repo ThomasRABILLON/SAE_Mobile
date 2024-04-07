@@ -117,7 +117,38 @@ class _DetailAnnoncePageState extends State<DetailAnnoncePage> {
                     );
                   }
                 },
-                buttonText: 'cloturer',
+                buttonText: 'mettre un avis',
+              ),
+              CustomButton(
+                onPressed: () async {
+                  try {
+                    widget.annonce
+                        .repondre(supabaseClient.auth.currentUser!.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Annonce répondu")),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())),
+                    );
+                  }
+                },
+                buttonText: 'Répondre',
+              ),
+              CustomButton(
+                onPressed: () async {
+                  try {
+                    widget.annonce.cloturer();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Annonce cloturer")),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())),
+                    );
+                  }
+                },
+                buttonText: 'Cloturer',
               ),
             ],
           ),

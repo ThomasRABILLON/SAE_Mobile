@@ -120,6 +120,8 @@ class AnnonceQueries {
   }
 
   static Future<void> mettreAvis(String id_a, String id_u, String avis) async {
+    print(id_a);
+    print(id_u);
     final existingReview = await supabaseClient
         .from('AVIS')
         .select()

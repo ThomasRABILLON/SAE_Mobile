@@ -49,17 +49,21 @@ class _DetailUserPageState extends State<DetailUserPage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(snapshot.data![index]['avis']),
-                          subtitle: Text(
-                              'Par ${snapshot.data![index]['users']['username']}'),
-                        );
-                      },
-                    );
+                    if (snapshot.data!.length == 0) {
+                      return Text('Aucun avis pour l\'utilisateur');
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(snapshot.data![index]['avis']),
+                            subtitle: Text(
+                                'Par ${snapshot.data![index]['users']['username']}'),
+                          );
+                        },
+                      );
+                    }
                   }
                 },
               ),

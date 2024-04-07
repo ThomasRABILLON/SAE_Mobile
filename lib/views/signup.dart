@@ -71,6 +71,7 @@ class _SignUpState extends State<SignUpView> {
                   CustomTextField(
                     controller: passwordController,
                     hintText: 'mot de passe',
+                    obscureText: true,
                   ),
                   SizedBox(height: 10.0),
                   ButtonTheme(

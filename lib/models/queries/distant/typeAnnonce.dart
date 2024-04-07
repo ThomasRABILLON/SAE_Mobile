@@ -4,7 +4,10 @@ final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class TypeAnnonceQueries {
   static Future<PostgrestList> getTypeAnnonces() async {
-    final response = await supabaseClient.from('TYPE_ANNONCES').select();
+    final response = await supabaseClient
+        .from('TYPE_ANNONCES')
+        .select()
+        .order('id', ascending: true);
     if (response.isEmpty) {
       throw Exception('Failed to get type annonces');
     }
