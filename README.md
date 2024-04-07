@@ -5,7 +5,7 @@ Groupe : RABILLON Thomas, RAVIART Alexandre
 ## Fonctionnalité implémentée
 
 - Authentification : Possibilité de se connecter et de s'inscrire en relation avec Supabase, et également de se déconnecter.
-- Publication d’annonces : Tout les utilisateurs peuvent publier des annonces pour demander à emprunter un bien en spécifiant la catégorie. Chaque annonce est stockée localement sur le smartphone avec sqflite avant d’être synchronisé sur Supabase.
+- Publication d’annonces : Tout les utilisateurs peuvent publier des annonces pour demander à emprunter un bien ou alors emprunter un bien en spécifiant la catégorie. Chaque annonce est stockée localement sur le smartphone avec sqflite avant d’être synchronisé sur Supabase.
 - Consultation d’annonces pour prêt : Les utilisateurs prêteurs peuvent consulter les annonces publiées et choisir de venir en aide en répondant à ces annonces. Le bien est alors marqué comme répondu, puis après a la fin du prêt, les annonces sont clôturées par le demandeur.
 - Gestion des états d'une annonces : Utilisation du pattern state.
 - Donner un avis : je peux donner un avis sur le produit une fois l'annonce cloturé ainsi que sur le prêteur.
