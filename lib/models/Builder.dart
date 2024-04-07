@@ -82,6 +82,7 @@ class Builder {
   ///
   /// Retourne une liste d'annonces.
   static Future<List<Annonce>> buildAnnoncesDistantRepondu(String id) async {
+    print("L'id de l'utilisateur est annonce distant repondu : $id");
     final data =
         await aqd.AnnonceQueries.getAnnonceRepondu(id).then((value) => value);
 
@@ -90,7 +91,18 @@ class Builder {
       String user_id = await aqd.AnnonceQueries.getAuteurAnnonce(annonce['id']);
       annonces.add(Annonce.fromJson(annonce, (await buildUserById(user_id))));
     }
+    print("Les annonces répondues : $annonces");
+    return annonces;
+  }
 
+  static Future<List<Annonce>> buildAnnoncesLocalUtilisateur(String id) async {
+    final data = await aql.AnnonceQueries.getAnnoncesByUser(id);
+
+    List<Annonce> annonces = [];
+    for (var annonce in data) {
+      annonces.add(Annonce.fromJson(annonce, await buildUserById(id)));
+    }
+    print("Les annonces locales : $annonces");
     return annonces;
   }
 

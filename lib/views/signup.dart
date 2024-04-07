@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sae_mobile/views/components/CustomButton.dart';
 import 'package:sae_mobile/views/components/CustomTextField.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:sae_mobile/models/queries/local/user.dart' as uql;
 import 'package:sae_mobile/models/auth/signup.dart';
 
 class SignUpView extends StatefulWidget {
@@ -22,9 +22,7 @@ class _SignUpState extends State<SignUpView> {
     return Stack(
       children: [
         Container(
-          height: MediaQuery.of(context)
-              .size
-              .height, // Assurez-vous que ce Container remplit l’écran
+          height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: FittedBox(
             fit: BoxFit.fitWidth,
@@ -81,14 +79,24 @@ class _SignUpState extends State<SignUpView> {
                         final ScaffoldMessengerState sm =
                             ScaffoldMessenger.of(context);
                         try {
-                          await SignUp.signUpWithPassword(emailController.text,
-                              passwordController.text, usernameController.text);
+                          await SignUp.signUpWithPassword(
+                            emailController.text,
+                            passwordController.text,
+                            usernameController.text,
+                          );
+                          final userId = supabaseClient.auth.currentUser!.id;
+                          await uql.UserQueries.createUser(
+                            userId,
+                            emailController.text,
+                            usernameController.text,
+                          );
                           sm.showSnackBar(
                               const SnackBar(content: Text('Bienvenue !')));
                           Navigator.pushNamed(context, '/accountCreated');
-                        } on AuthException catch (e) {
+                        } catch (e) {
                           sm.showSnackBar(SnackBar(
-                              content: Text('Sign up failed: ${e.message}')));
+                              content:
+                                  Text('Sign up failed: ${e.toString()}')));
                         }
                       },
                       buttonText: 'Créer un compte',

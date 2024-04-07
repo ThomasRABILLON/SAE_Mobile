@@ -6,7 +6,6 @@ import 'package:sae_mobile/models/Builder.dart' as builder_model;
 
 import 'package:sae_mobile/models/queries/local/annonce.dart' as aq;
 
-
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class CreateAnnonce extends StatefulWidget {
@@ -38,9 +37,7 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
         TextField(
             controller: _dateDebController,
             decoration: const InputDecoration(
-                icon: Icon(Icons.calendar_today),
-                labelText: "Enter Date"
-            ),
+                icon: Icon(Icons.calendar_today), labelText: "Enter Date"),
             readOnly: true,
             onTap: () async {
               DateTime? date = await showDatePicker(
@@ -52,14 +49,11 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
               if (date != null) {
                 _dateDebController.text = date.toString();
               }
-            }
-        ),
+            }),
         TextField(
             controller: _dateFinController,
             decoration: const InputDecoration(
-                icon: Icon(Icons.calendar_today),
-                labelText: "Enter Date"
-            ),
+                icon: Icon(Icons.calendar_today), labelText: "Enter Date"),
             readOnly: true,
             onTap: () async {
               DateTime? date = await showDatePicker(
@@ -71,10 +65,10 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
               if (date != null) {
                 _dateFinController.text = date.toString();
               }
-            }
-        ),
+            }),
         FutureBuilder(
-          future: builder_model.Builder.buildUserById(supabaseClient.auth.currentUser!.id),
+          future: builder_model.Builder.buildUserById(
+              supabaseClient.auth.currentUser!.id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -82,12 +76,12 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             }
-
             final user = snapshot.data as user_model.User;
 
             return ElevatedButton(
               onPressed: () async {
                 await aq.AnnonceQueries.createAnnonce(
+                  user.id, // Utilisez l'ID de l'utilisateur
                   _titleController.text,
                   _descriptionController.text,
                   DateTime.parse(_dateDebController.text),
@@ -99,7 +93,7 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
 
                 Navigator.pushNamed(context, '/annonces');
               },
-              child: const Text('Create Annonce'),
+              child: Text('Create Annonce'),
             );
           },
         ),
