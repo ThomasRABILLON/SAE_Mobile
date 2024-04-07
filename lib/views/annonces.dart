@@ -3,6 +3,8 @@ import 'package:sae_mobile/models/Builder.dart' as builder_model;
 import 'package:sae_mobile/views/annonceTile.dart';
 import 'package:sae_mobile/models/annonce.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sae_mobile/views/annonceDetail.dart';
+
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class AnnoncesView extends StatefulWidget {
@@ -53,25 +55,36 @@ class _AnnoncesViewState extends State<AnnoncesView> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final annonce = snapshot.data![index];
-                  return Container(
-                    height: 200,
-                    child: Card(
-                      margin: EdgeInsets.all(10.0),
-                      child: Row(
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.asset(
-                              'images/box_base.png',
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DetailAnnoncePage(annonce: annonce),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 200,
+                      child: Card(
+                        margin: EdgeInsets.all(10.0),
+                        child: Row(
+                          children: <Widget>[
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.asset(
+                                'images/box_base.png',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: AnnonceTile(annonce: annonce),
-                          ),
-                        ],
+                            Expanded(
+                              child: AnnonceTile(annonce: annonce),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
