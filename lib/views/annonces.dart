@@ -3,7 +3,6 @@ import 'package:sae_mobile/models/Builder.dart' as builder_model;
 import 'package:sae_mobile/views/annonceTile.dart';
 import 'package:sae_mobile/models/annonce.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
 class AnnoncesView extends StatefulWidget {

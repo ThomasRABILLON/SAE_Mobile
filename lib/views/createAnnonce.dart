@@ -3,8 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:sae_mobile/models/User.dart' as user_model;
 import 'package:sae_mobile/models/Builder.dart' as builder_model;
-
+import 'package:sae_mobile/models/queries/distant/typeAnnonce.dart';
 import 'package:sae_mobile/models/queries/local/annonce.dart' as aq;
+import 'package:sae_mobile/models/TypeAnnonce.dart';
 
 final SupabaseClient supabaseClient = Supabase.instance.client;
 
@@ -20,6 +21,8 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateDebController = TextEditingController();
   final TextEditingController _dateFinController = TextEditingController();
+  int? _selectedTypeAnnonceIndex;
+  List<TypeAnnonce>? typesAnnonce;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +69,36 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
                 _dateFinController.text = date.toString();
               }
             }),
+        FutureBuilder<List<TypeAnnonce>>(
+          future: builder_model.Builder.buildTypesAnnonceDistant(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            typesAnnonce = snapshot.data!;
+            if (_selectedTypeAnnonceIndex == null && typesAnnonce!.isNotEmpty) {
+              _selectedTypeAnnonceIndex = 0;
+            }
+            return DropdownButton<int>(
+              value: _selectedTypeAnnonceIndex,
+              items: typesAnnonce!.asMap().entries.map((entry) {
+                return DropdownMenuItem<int>(
+                  value: entry.key,
+                  child: Text(entry.value.libelle),
+                );
+              }).toList(),
+              onChanged: (int? newIndex) {
+                setState(() {
+                  _selectedTypeAnnonceIndex = newIndex;
+                });
+              },
+              hint: Text('Select a category'),
+            );
+          },
+        ),
         FutureBuilder(
           future: builder_model.Builder.buildUserById(
               supabaseClient.auth.currentUser!.id),
@@ -80,18 +113,20 @@ class _CreateAnnonceState extends State<CreateAnnonce> {
 
             return ElevatedButton(
               onPressed: () async {
+                final selectedTypeAnnonce =
+                    typesAnnonce![_selectedTypeAnnonceIndex!];
                 await aq.AnnonceQueries.createAnnonce(
-                  user.id, // Utilisez l'ID de l'utilisateur
+                  user.id,
                   _titleController.text,
                   _descriptionController.text,
                   DateTime.parse(_dateDebController.text),
                   DateTime.parse(_dateFinController.text),
                   1,
                   1,
-                  1,
+                  selectedTypeAnnonce!.id,
                 );
 
-                Navigator.pushNamed(context, '/annonces');
+                Navigator.pushNamed(context, '/categorie');
               },
               child: Text('Create Annonce'),
             );
